@@ -31,24 +31,29 @@ connection info is injected into the test properties when running
 
 #### Instructions for running application tests
 
-To run you can execute: 
- ``` bash
- mvn spring-boot:run
+To run tests: 
+
+``` bash
+mvn test
 ```
-    
-
-**BEFORE running without maven if you prefer that** 
-- make sure annotation processing is enable in your IDE
-- run a maven install to mapstruct, lombok, and openapi codegen
-- mark /target/generated-sources as Generated Sources Root
-
-Tests can be ran through the maven test step or by manually running the tests in the be.one16.cerbainterview.api package
-can run with the default profile, no extra config required
-
 
 #### Instructions for starting the application, including any profile to be used
-run CerbaInterviewApplication.java no extra config required
 
+To run the application:
+
+``` bash
+mvn spring-boot:run 
+```
+
+**Interact with the api**
 - after starting swagger is available at http://localhost:8080/swagger-ui/index.html
 - openapi-spec can be found in the resources folder (see recipe-api-1.0.0.yaml)
 - project has intellij http files (see http folder in root)
+
+**running without maven**
+- make sure annotation processing is enable in your IDE
+- run a maven install to mapstruct, lombok, and openapi codegen
+- mark /target/generated-sources as Generated Sources Root for compilation
+- run CerbaInterviewApplication.java
+
+
