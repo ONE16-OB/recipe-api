@@ -1,0 +1,62 @@
+### Create a new recipe
+POST http://localhost:8080/recipes
+Content-Type: application/json
+
+{
+  "name": "c",
+  "description": "Sample Description",
+  "cookingInstructions": "Sample Cooking Instructions"
+}
+
+### Create a new recipe with RecipeIngredientDTO ###
+POST http://localhost:8080/recipes
+Content-Type: application/json
+
+{
+  "name": "a",
+  "description": "Sample Description",
+  "cookingInstructions": "Sample Cooking Instructions",
+  "ingredients": [
+    {
+      "uuid": "cd4e583a-13a1-4f2f-a868-9a30ef30d5a3",
+      "quantity": "100g"
+    },
+    {
+      "uuid": "ddbabd83-1d21-497e-9be0-e0cd10433a82",
+      "quantity": "200g"
+    }
+  ]
+}
+
+### Delete a recipe
+DELETE http://localhost:8080/recipes/{recipeUUID}
+
+### Get all recipes
+GET http://localhost:8080/recipes?page=0&size=10
+
+### Get a recipe by UUID
+GET http://localhost:8080/recipes/{recipeUUID}
+
+### Update a recipe
+PUT http://localhost:8080/recipes/{recipeUUID}
+Content-Type: application/json
+
+{
+  "name": "Updated Recipe",
+  "description": "Updated Description",
+  "cookingInstructions": "Updated Cooking Instructions"
+}
+
+### add an ingredient to a recipe
+POST http://localhost:8080/recipes/4a8005b4-a746-4938-98ee-fc4fc0d00d47/ingredients
+Content-Type: application/json
+
+{
+  "uuid": "03caf04c-6804-4233-a361-67bdc218b72d",
+  "quantity": "ingredient_quantity"
+}
+
+
+### remove an ingredient to a recipe
+DELETE http://localhost:8080/recipes/4a8005b4-a746-4938-98ee-fc4fc0d00d47/ingredients/03caf04c-6804-4233-a361-67bdc218b72d
+Content-Type: application/json

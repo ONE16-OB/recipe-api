@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: cerba-interview
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cerba_interview_db
+    username: postgres
+    password: Th1s1sMyPass_word
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+
+  docker:
+    compose:
+      lifecycle-management: start-and-stop
+      enabled: true
+      file: compose.yaml
+  sql:
+    init:
+      mode: always

@@ -1,0 +1,509 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Recipe API
+  description: An API for managing recipes and ingredients using UUIDs
+
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: recipe
+  - name: ingredient
+
+paths:
+  /recipes:
+    get:
+      tags:
+        - recipe
+      summary: Get all recipes
+      operationId: getAllRecipes
+      parameters:
+        - in: query
+          name: page
+          description: Page number (starts from 0)
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: size
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Recipe"
+                  pageable:
+                    $ref: "#/components/schemas/Pageable"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - recipe
+      summary: Create a new recipe
+      operationId: createRecipe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeData"
+      responses:
+        '201':
+          description: Recipe created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /recipes/{recipeUUID}:
+    get:
+      tags:
+        - recipe
+      summary: Get a recipe by UUID
+      operationId: getRecipeByUUID
+      parameters:
+        - in: path
+          name: recipeUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Recipe found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - recipe
+      summary: Update a recipe
+      operationId: updateRecipeByUUID
+      parameters:
+        - in: path
+          name: recipeUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeData"
+      responses:
+        '200':
+          description: Recipe updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - recipe
+      summary: Delete a recipe
+      operationId: deleteRecipeByUUID
+      parameters:
+        - in: path
+          name: recipeUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Recipe deleted
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /recipes/{recipeUUID}/ingredients:
+    post:
+      tags:
+        - recipe
+      summary: Add an ingredient to a recipe
+      operationId: addIngredientToRecipe
+      parameters:
+        - in: path
+          name: recipeUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeIngredientData"
+      responses:
+        '200':
+          description: Ingredient added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /recipes/{recipeUUID}/ingredients/{ingredientUUID}:
+    delete:
+      tags:
+        - recipe
+      summary: Remove an ingredient from a recipe
+      operationId: removeIngredientFromRecipe
+      parameters:
+        - in: path
+          name: recipeUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: path
+          name: ingredientUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Ingredient removed successfully
+        '404':
+          description: Ingredient not found in recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /ingredients:
+    get:
+      tags:
+        - ingredient
+      summary: Get all ingredients
+      operationId: getAllIngredients
+      parameters:
+        - in: query
+          name: page
+          description: Page number (starts from 0)
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: size
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: List of ingredients
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Ingredient"
+                  pageable:
+                    $ref: "#/components/schemas/Pageable"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - ingredient
+      summary: Create a new ingredient
+      operationId: createIngredient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IngredientData"
+      responses:
+        '201':
+          description: Ingredient created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ingredient"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /ingredients/{ingredientUUID}:
+    get:
+      tags:
+        - ingredient
+      summary: Get an ingredient by UUID
+      operationId: getIngredientByUUID
+      parameters:
+        - in: path
+          name: ingredientUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Ingredient found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ingredient"
+        '404':
+          description: Ingredient not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - ingredient
+      summary: Update an ingredient
+      operationId: updateIngredientByUUID
+      parameters:
+        - in: path
+          name: ingredientUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IngredientData"
+      responses:
+        '200':
+          description: Ingredient updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ingredient"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - ingredient
+      summary: Delete an ingredient
+      operationId: deleteIngredientByUUID
+      parameters:
+        - in: path
+          name: ingredientUUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Ingredient deleted
+        '404':
+          description: Ingredient not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    TrackingData:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the entity was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time when the entity was last updated.
+      required:
+        - createdAt
+
+    Ingredient:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        trackingData:
+          $ref: "#/components/schemas/TrackingData"
+      required:
+        - uuid
+        - name
+        - trackingData
+
+    Recipe:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+          minLength: 1
+        cookingInstructions:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeIngredient"
+        trackingData:
+          $ref: "#/components/schemas/TrackingData"
+      required:
+        - uuid
+        - name
+        - description
+        - cookingInstructions
+        - ingredients
+        - trackingData
+
+    RecipeIngredient:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        quantity:
+          type: string
+      required:
+        - uuid
+        - name
+        - quantity
+
+    IngredientData:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    RecipeData:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          minLength: 1
+        cookingInstructions:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeIngredientData"
+      required:
+        - name
+        - description
+        - cookingInstructions
+        - ingredients
+
+    RecipeIngredientData:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        quantity:
+          type: string
+      required:
+        - name
+        - quantity
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Server ran into an issue"
+        errorCode:
+          type: integer
+          example: 500
+      required:
+        - message
+        - errorCode
+
+    Pageable:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean

@@ -1,0 +1,28 @@
+### Create Ingredient Request ###
+POST http://localhost:8080/ingredients
+Content-Type: application/json
+
+{
+  "name": "c",
+  "quantity": "100g"
+}
+
+### Get Paged Ingredients Request ###
+GET http://localhost:8080/ingredients?page=0&size=10
+Accept: application/json
+
+### Get Ingredient Request ###
+GET http://localhost:8080/ingredients/9e6ac543-7ed5-4e6a-9ee5-b1bdf23e4900
+Content-Type: application/json
+
+### Update Ingredient Request ###
+PUT http://localhost:8080/ingredients/03caf04c-6804-4233-a361-67bdc218b72d
+Content-Type: application/json
+
+{
+  "name": "d"
+}
+
+### Delete Ingredient Request ###
+DELETE http://localhost:8080/ingredients/03d202ea-9667-4c01-859a-e64ca5807af8
+Content-Type: application/json
