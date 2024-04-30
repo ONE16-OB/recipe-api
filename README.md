@@ -37,7 +37,7 @@ To run you can execute:
 ```
     
 
-**BEFORE running** 
+**BEFORE running without maven if you prefer that** 
 - make sure annotation processing is enable in your IDE
 - run a maven install to mapstruct, lombok, and openapi codegen
 - mark /target/generated-sources as Generated Sources Root
